@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lechi Analytica - Sistema RAG</title>
+    <style>
+        body, html { margin: 0; padding: 0; box-sizing: border-box; }
+        *, *::before, *::after { box-sizing: inherit; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .header {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo img { max-width: 180px; height: auto; }
+        .brand-name {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00d4ff;
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .hero {
+            text-align: center;
+            margin-bottom: 80px;
+            margin-top: 120px;
+        }
+        .subtitle { 
+            color: #00d4ff; 
+            font-size: 32px; 
+            font-weight: 600;
+            margin-bottom: 20px; 
+        }
+        .description { 
+            color: #aaa; 
+            font-size: 18px; 
+            line-height: 1.8; 
+            max-width: 800px;
+            margin: 0 auto 60px;
+        }
+        .buttons { 
+            display: flex; 
+            gap: 30px; 
+            justify-content: center; 
+            flex-wrap: wrap;
+            margin-bottom: 100px;
+        }
+        .btn {
+            padding: 20px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-upload {
+            background: #00d4ff;
+            color: #0a0a0a;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+        .btn-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.6);
+            background: #00e5ff;
+        }
+        .btn-search {
+            background: transparent;
+            color: #00d4ff;
+            border: 2px solid #00d4ff;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
+        }
+        .btn-search:hover {
+            transform: translateY(-2px);
+            background: #00d4ff;
+            color: #0a0a0a;
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+        }
+        .icon { font-size: 24px; }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .feature {
+            padding: 40px;
+            background: #1a1a1a;
+            border-radius: 15px;
+            border: 1px solid #2a2a2a;
+            transition: all 0.3s ease;
+        }
+        .feature:hover {
+            border-color: #00d4ff;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
+        }
+        .feature-icon { font-size: 48px; margin-bottom: 20px; }
+        .feature-title { font-weight: 600; color: #00d4ff; margin-bottom: 15px; font-size: 20px; }
+        .feature-desc { font-size: 16px; color: #888; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="https://www.lechi.com.br/img/Logo%202025-16.png" alt="Lechi Analytica">
+        </div>
+        <div class="brand-name">Lechi Analytica</div>
+    </div>
+    
+    <div class="hero">
+        <div class="subtitle">Sistema Inteligente de Suporte</div>
+        <div class="description">
+            Plataforma avançada para suporte inteligente IA-7.
+        </div>
+        
+        <div class="buttons">
+            <a href="/search/" class="btn btn-search">
+                <span class="icon">💬</span>
+                Suporte imediato 
+            </a>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-title">IA Avançada</div>
+                <div class="feature-desc">Utilizamos nossa IA para respostas precisas</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">Busca Rápida</div>
+                <div class="feature-desc">Todas Informações</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📚</div>
+                <div class="feature-title">Documentação</div>
+                <div class="feature-desc">Documentação Oficial da empresa</div>
+            </div>
+        </div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG - Sistema de Documentos</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        h1 { color: #333; }
+        .section { margin: 30px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+        input[type="file"], input[type="text"], textarea { width: 100%; padding: 10px; margin: 10px 0; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .document { padding: 10px; margin: 10px 0; background: #f5f5f5; border-radius: 5px; }
+        .result { margin: 10px 0; padding: 10px; background: #e9f7ef; border-left: 4px solid #28a745; }
+    </style>
+</head>
+<body>
+    <h1>Sistema RAG - Documentos</h1>
+    
+    <div class="section">
+        <h2>Upload de Documento</h2>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="pdf_file" accept=".pdf" required>
+            <input type="text" name="author" placeholder="Autor">
+            <input type="text" name="category" placeholder="Categoria">
+            <input type="text" name="type" placeholder="Tipo (ex: technical_document)">
+            <button type="submit">Enviar e Processar</button>
+        </form>
+        <div id="uploadResult"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Buscar Documentos</h2>
+        <form id="searchForm">
+            <textarea name="query" placeholder="Digite sua pergunta..." rows="3" required></textarea>
+            <button type="submit">Buscar</button>
+        </form>
+        <div id="searchResults"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Documentos Processados</h2>
+        {% for doc in documents %}
+        <div class="document">
+            <strong>{{ doc.source }}</strong> - {{ doc.category }}<br>
+            Autor: {{ doc.author }} | Data: {{ doc.date }}<br>
+            {% if doc.s3_url %}<a href="{{ doc.s3_url }}" target="_blank">Ver no S3</a>{% endif %}
+        </div>
+        {% empty %}
+        <p>Nenhum documento processado ainda.</p>
+        {% endfor %}
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const result = document.getElementById('uploadResult');
+            result.innerHTML = 'Processando...';
+            
+            try {
+                const response = await fetch('/rag/', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                result.innerHTML = data.success ? 
+                    `<div class="result">✓ ${data.message}</div>` : 
+                    `<div style="color:red">✗ ${data.error}</div>`;
+                if (data.success) setTimeout(() => location.reload(), 2000);
+            } catch (error) {
+                result.innerHTML = `<div style="color:red">Erro: ${error}</div>`;
+            }
+        });
+
+        document.getElementById('searchForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const results = document.getElementById('searchResults');
+            results.innerHTML = 'Buscando...';
+            
+            try {
+                const response = await fetch('/search/', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                if (data.success) {
+                    results.innerHTML = '<h3>Resultados:</h3>' + 
+                        JSON.stringify(data.results, null, 2);
+                } else {
+                    results.innerHTML = `<div style="color:red">${data.error}</div>`;
+                }
+            } catch (error) {
+                results.innerHTML = `<div style="color:red">Erro: ${error}</div>`;
+            }
+        });
+    </script>
+</body>
+</html>

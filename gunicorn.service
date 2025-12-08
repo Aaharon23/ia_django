@@ -1,0 +1,19 @@
+[Unit]
+Description=Gunicorn daemon for Lechi Analytica RAG
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/lechi-rag
+Environment="PATH=/home/ubuntu/lechi-rag/venv/bin"
+EnvironmentFile=/home/ubuntu/lechi-rag/.env
+ExecStart=/home/ubuntu/lechi-rag/venv/bin/gunicorn \
+          --config /home/ubuntu/lechi-rag/gunicorn_config.py \
+          ia.wsgi:application
+
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

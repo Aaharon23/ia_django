@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload de Documento</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; background: #0a0a0a; color: #aaa; }
+        h1 { color: #00d4ff; }
+        form { padding: 20px; border: 1px solid #2a2a2a; border-radius: 5px; background: #1a1a1a; }
+        input[type="file"], input[type="text"] { width: 100%; padding: 10px; margin: 10px 0; background: #252525; border: 1px solid #333; color: #aaa; border-radius: 5px; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .result { margin: 20px 0; padding: 15px; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        a { color: #00d4ff; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <h1>Upload de Documento PDF</h1>
+    <p><a href="/search/">→ Ir para Busca</a></p>
+    
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="pdf_file" accept=".pdf" required>
+        <input type="text" name="author" placeholder="Autor">
+        <input type="text" name="category" placeholder="Categoria">
+        <input type="text" name="type" placeholder="Tipo (ex: technical_document)">
+        <button type="submit">Enviar e Processar</button>
+    </form>
+    
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const result = document.getElementById('result');
+            result.innerHTML = '<div class="result">Processando...</div>';
+            
+            try {
+                const response = await fetch('/rag/', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    result.innerHTML = `<div class="result success">✓ ${data.message}<br>URL: ${data.s3_url}</div>`;
+                    e.target.reset();
+                } else {
+                    result.innerHTML = `<div class="result error">✗ ${data.error}</div>`;
+                }
+            } catch (error) {
+                result.innerHTML = `<div class="result error">Erro: ${error}</div>`;
+            }
+        });
+    </script>
+</body>
+</html>

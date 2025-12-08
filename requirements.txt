@@ -1,0 +1,5 @@
+Django>=6.0
+python-dotenv
+boto3
+agno-ai
+gunicorn

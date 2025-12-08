@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca de Documentos</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; background: #0a0a0a; color: #aaa; }
+        h1 { color: #00d4ff; }
+        h3 { color: #00d4ff; }
+        form { padding: 20px; border: 1px solid #2a2a2a; border-radius: 5px; background: #1a1a1a; }
+        textarea { width: 100%; padding: 10px; margin: 10px 0; font-family: Arial; background: #252525; border: 1px solid #333; color: #aaa; border-radius: 5px; }
+        button { background: #00d4ff; color: #0a0a0a; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; }
+        button:hover { background: #00e5ff; }
+        .results { margin: 20px 0; }
+        .result-item { padding: 15px; margin: 10px 0; background: #1a1a1a; border-left: 4px solid #00d4ff; border-radius: 5px; white-space: pre-wrap; color: #aaa; }
+        .error { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; }
+        a { color: #00d4ff; text-decoration: none; }
+        pre { background: #1a1a1a; padding: 10px; border-radius: 5px; overflow-x: auto; color: #aaa; border: 1px solid #2a2a2a; }
+    </style>
+</head>
+<body>
+    <h1>Busca de Documentos</h1>
+    
+    <form id="searchForm">
+        <textarea name="query" placeholder="Digite sua pergunta..." rows="3" required></textarea>
+        <button type="submit">Buscar</button>
+    </form>
+    
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const results = document.getElementById('results');
+            results.innerHTML = '<div class="result-item">Buscando...</div>';
+            
+            try {
+                const response = await fetch('/search/', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    results.innerHTML = `
+                        <div class="results">
+                            <h3>Pergunta: "${data.query}"</h3>
+                            <div class="result-item">${data.response}</div>
+                        </div>
+                    `;
+                } else {
+                    results.innerHTML = `<div class="error">✗ ${data.error}</div>`;
+                }
+            } catch (error) {
+                results.innerHTML = `<div class="error">Erro: ${error}</div>`;
+            }
+        });
+    </script>
+</body>
+</html>
