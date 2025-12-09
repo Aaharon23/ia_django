@@ -194,36 +194,3 @@ sudo systemctl restart gunicorn
 # Backup do banco
 python manage.py dumpdata > backup.json
 ```
-
-## 14. Troubleshooting
-
-### Erro 502 Bad Gateway
-```bash
-sudo systemctl status gunicorn
-sudo journalctl -u gunicorn -n 50
-```
-
-### Erro de permissão
-```bash
-sudo chown -R ubuntu:www-data /home/ubuntu/lechi-rag
-sudo chmod -R 755 /home/ubuntu/lechi-rag
-```
-
-### Arquivos estáticos não carregam
-```bash
-python manage.py collectstatic --noinput
-sudo systemctl restart nginx
-```
-
-## 15. Segurança Adicional
-
-- Configurar backup automático do banco
-- Configurar monitoramento (CloudWatch)
-- Configurar alertas de erro
-- Limitar tentativas de login
-- Configurar rate limiting no Nginx
-- Manter sistema atualizado
-
-## 🎉 Deploy Completo!
-
-Seu sistema está rodando em produção na EC2!
