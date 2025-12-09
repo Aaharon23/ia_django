@@ -18,7 +18,7 @@ class RAGService:
         # Configurar banco vetorial Qdrant
         self.vector_db = Qdrant(
             collection="documentos",
-            url="http://34.235.67.215:6333",
+            url="http://xxx.xxx.xxx.xxx:6333",
             embedder=OpenAIEmbedder(id="text-embedding-3-small", dimensions=1536)
         )
         
@@ -27,7 +27,7 @@ class RAGService:
         
         # Base de conhecimento
         self.knowledge_base = Knowledge(
-            name="Base de dados IA-7 CFTVIP",
+            name="xxxxxx",
             description="Base de conhecimento sobre documentos",
             vector_db=self.vector_db,
             readers={"pdf": self.pdf_reader},
@@ -52,7 +52,7 @@ class RAGService:
             markdown=True
         )
         
-        self.bucket_name = os.getenv('AWS_S3_BUCKET', 'xz500bbrty-adr')
+        self.bucket_name = os.getenv('AWS_S3_BUCKET', 'xxxxxx')
     
     def upload_pdf_to_s3(self, file_path, s3_key=None):
         """Faz upload de PDF para S3 com ACL pública"""
